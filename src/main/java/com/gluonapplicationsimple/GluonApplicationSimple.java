@@ -1,5 +1,6 @@
 package com.gluonapplicationsimple;
 
+import com.gluonapplicationsimple.ui.BasicViewFactory;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.license.License;
 import com.gluonhq.charm.glisten.visual.Swatch;
@@ -12,7 +13,7 @@ public class GluonApplicationSimple extends MobileApplication {
 
     @Override
     public void init() {
-        addViewFactory(HOME_VIEW, BasicView::new);
+        addViewFactory(HOME_VIEW, BasicViewFactory::getView);
     }
 
     @Override

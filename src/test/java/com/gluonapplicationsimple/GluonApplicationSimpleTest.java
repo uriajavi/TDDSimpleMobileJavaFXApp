@@ -58,5 +58,5 @@ public class GluonApplicationSimpleTest {
     @Test
     public void testAppBarIsVisible(){
         verifyThat(app.getAppBar(),isVisible());
-    }
+    }   
 }
