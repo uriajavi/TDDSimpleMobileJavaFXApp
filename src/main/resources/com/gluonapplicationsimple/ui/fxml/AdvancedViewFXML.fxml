@@ -1,12 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.Avatar?>
+<?import com.gluonhq.charm.glisten.control.CharmListView?>
+<?import com.gluonhq.charm.glisten.control.DropdownButton?>
 <?import com.gluonhq.charm.glisten.mvc.View?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.BorderPane?>
-
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <View fx:id="vwAdvanced" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gluonapplicationsimple.ui.controller.AdvancedViewFXMLController">
    <center>
-      <Label fx:id="lbWelcome" text="Welcome Customer!!!" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="277.0">
+               <children>
+                  <Label fx:id="lblWelcome" prefHeight="18.0" prefWidth="220.0" style="-fx-text-fill: #2190ff;" text="Welcome">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <Avatar fx:id="imgAvatar" radius="30.0" style="-fx-alignment: center-right;">
+                     <image>
+                        <Image url="@../../../../icon.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Avatar>
+               </children>
+            </HBox>
+            <Label fx:id="lblAccounts" prefHeight="18.0" prefWidth="220.0" style="-fx-text-fill: #2190ff;" text="Select an Account:" />
+            <DropdownButton fx:id="ddbAccount" minWidth="-Infinity" prefHeight="27.0" prefWidth="270.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </DropdownButton>
+            <Label fx:id="lblMovements" prefHeight="18.0" prefWidth="220.0" style="-fx-text-fill: #2190ff;" text="Movements:" />
+            <CharmListView fx:id="lstMovements" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="217.0" prefWidth="286.0" />
+            <Label fx:id="lblCurrentBalance" prefHeight="18.0" prefWidth="220.0" style="-fx-text-fill: #2190ff;" text="Current Balance : " />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="30.0" top="80.0" />
+         </padding>
+      </VBox>
    </center>
 </View>

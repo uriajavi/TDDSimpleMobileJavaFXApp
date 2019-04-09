@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-@License(key="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX")
+@License(key="7e71ebf2-bb31-44b7-806e-2cb0e3a7f4ba")
 public class GluonApplicationSimple extends MobileApplication {
 
     public static final String ADVANCED_VIEW = "Advanced View";

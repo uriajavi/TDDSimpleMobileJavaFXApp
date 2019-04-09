@@ -97,7 +97,7 @@ public class BasicFXMLControllerTest extends FxRobot {
         clickOn("#btEnter");
 
         verifyThat("#vwAdvanced",isVisible());
-        verifyThat("Welcome Customer!!!",isVisible());
+        verifyThat("Welcome",isVisible());
     }
     /**
      * Test that a message appears when Customer ID is not numeric.
