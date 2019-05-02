@@ -5,6 +5,7 @@
  */
 package com.gluonapplicationsimple.ui.controller;
 
+import clientside.controller.CustomerManager;
 import com.gluonapplicationsimple.GluonApplicationSimple;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
@@ -26,12 +27,12 @@ import javafx.scene.control.Button;
  */
 public class BasicFXMLController {
     @FXML
-    View vwBasic;
+    private View vwBasic;
     @FXML
-    Button btEnter;
+    private Button btEnter;
     @FXML
-    TextField tfCustomerID;
-    Snackbar snackbar;
+    private TextField tfCustomerID;
+    private Snackbar snackbar;
     /**
      * Initializes the controller class.
      */
@@ -63,9 +64,13 @@ public class BasicFXMLController {
     
     public void handleOnActionEnter(ActionEvent event){
         //Validate CustomerID
-        if(tfCustomerID.getText().matches("\\d+"))
-            MobileApplication.getInstance().switchView(GluonApplicationSimple.ADVANCED_VIEW);
-        else{
+        if(tfCustomerID.getText().matches("\\d+")){
+            GluonApplicationSimple app=
+                    (GluonApplicationSimple)MobileApplication.getInstance();
+            //Store customer id in session and show advanced view
+            app.getSession().put("customerID",new Long(tfCustomerID.getText().trim()));
+            app.switchView(GluonApplicationSimple.ADVANCED_VIEW);
+        }else{
              snackbar.setMessage("Customer ID must be numeric!!!");
              snackbar.show();
         }

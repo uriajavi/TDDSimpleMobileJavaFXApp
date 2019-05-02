@@ -35,6 +35,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.testfx:testfx-core:4.0.+"
     testCompile "org.testfx:testfx-junit:4.0.+"
+    //compile files('libs/CRUDBankClientLibrary.jar')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 }
 
 jfxmobile {
