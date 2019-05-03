@@ -26,7 +26,9 @@ public class GluonApplicationSimple extends MobileApplication {
         //create session
         session=new HashMap();
         //get business logic controller and stores in the session object
-        session.put("manager", CustomerManagerFactory.getCustomerManager());
+        CustomerManager manager= CustomerManagerFactory.getCustomerManager();
+        manager.setServerName("localhost");
+        session.put("manager",manager);
     }
 
     @Override

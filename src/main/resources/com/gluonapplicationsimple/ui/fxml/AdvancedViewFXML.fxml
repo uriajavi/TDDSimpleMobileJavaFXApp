@@ -32,8 +32,8 @@
                   </Avatar>
                </children>
             </HBox>
-            <Label fx:id="lblAccounts" prefHeight="18.0" prefWidth="220.0" style="-fx-text-fill: #2190ff;" text="Select an Account:" />
-            <DropdownButton fx:id="ddbAccount" minWidth="-Infinity" prefHeight="27.0" prefWidth="270.0">
+            <Label fx:id="lblAccounts" prefHeight="18.0" prefWidth="220.0" style="-fx-text-fill: #2190ff;" text="Account:" />
+            <DropdownButton fx:id="btAccount" minWidth="-Infinity" prefHeight="27.0" prefWidth="270.0">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

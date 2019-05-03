@@ -6,8 +6,10 @@
 package com.gluonapplicationsimple.ui.controller;
 
 import com.gluonapplicationsimple.GluonApplicationSimple;
+import com.gluonhq.charm.glisten.control.DropdownButton;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.Node;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -67,5 +69,15 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
     @Test
     public void testCustomerWelcomeIsVisible() {
         verifyThat("Welcome John S. Smith",isVisible());
+    }
+    /**
+     * Test first account is selected and shown.
+     */
+    @Test
+    public void testFirstAccountIsSelected(){
+        DropdownButton btAccount=lookup("#btAccount").query();
+        assertEquals("First account of the customer is not selected!!!",
+                     "STANDARD # 1569874954",
+                     btAccount.getSelectedItem().getText());
     }
 }

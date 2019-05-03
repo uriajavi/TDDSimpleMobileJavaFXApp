@@ -37,6 +37,11 @@ dependencies {
     testCompile "org.testfx:testfx-junit:4.0.+"
     //compile files('libs/CRUDBankClientLibrary.jar')
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1'
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.25.1'
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-common', version: '2.25.1'    
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet-core', version: '2.25.1'
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.25.1'
 }
 
 jfxmobile {
