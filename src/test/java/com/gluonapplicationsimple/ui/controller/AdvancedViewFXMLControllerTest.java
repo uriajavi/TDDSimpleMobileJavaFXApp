@@ -5,10 +5,14 @@
  */
 package com.gluonapplicationsimple.ui.controller;
 
+import clientside.controller.CustomerManager;
 import com.gluonapplicationsimple.GluonApplicationSimple;
 import com.gluonhq.charm.glisten.control.DropdownButton;
 import java.util.concurrent.TimeoutException;
+import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.stage.Stage;
+import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -19,6 +23,7 @@ import org.testfx.api.FxToolkit;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import org.testfx.service.query.EmptyNodeQueryException;
+import org.testfx.util.WaitForAsyncUtils;
 
 /**
  * Test class for Mobile JavaFX UI advanced view controller.
@@ -30,6 +35,9 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
      * JavaFX Application instance to be tested.  
      */
     private static GluonApplicationSimple app;
+    private static final String CUSTOMER_WITH_SEVERAL_ACCOUNTS="102263301";
+    private static final String CUSTOMER_WITH_NO_ACCOUNTS="345678401";
+    private static final String CUSTOMER_NON_EXISTENT="999999";
     /**
      * Set up Java FX fixture for tests. This is a general approach for using a 
      * unique instance of the application in the test.
@@ -52,32 +60,55 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
         }catch(EmptyNodeQueryException e){
             //Does nothing
         }
-        //Open Advanced View with customer ID=102263301
+    }
+    //@After
+    public void cleanUp() throws Exception{
+        FxToolkit.cleanupStages();
+    }
+    /**
+     * Open Advanced View from Home View entering customerID
+     * @param customerID 
+     */
+    private void enterCustomerId(String customerID){
         try{
             Node close=lookup("#btEnter").query();
             clickOn("#tfCustomerID");
-            write("102263301");
+            write(customerID);
             verifyThat("#btEnter",isEnabled());
             clickOn("#btEnter");
         }catch(EmptyNodeQueryException e){
-            //Does nothing
+            //Change customer in session
+            app.getSession().replace("customer",
+                    ((CustomerManager)app.getSession().get("manager"))
+                            .getCustomerAccountsFullInfo(new Long(customerID)));
+            //initialize view
+            //TO DO
         }
     }
     /**
      * Test welcome for customer is visible.
      */
     @Test
-    public void testCustomerWelcomeIsVisible() {
+    public void testCustomerWelcomeIsVisibleForCustomerWithAccounts() {
+        enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
         verifyThat("Welcome John S. Smith",isVisible());
+    }
+    @Test
+    public void testCustomerWelcomeIsVisibleForCustomerWithNoAccounts() {
+        enterCustomerId(CUSTOMER_WITH_NO_ACCOUNTS);
+        verifyThat("Welcome Raymond J. Williams",isVisible());
     }
     /**
      * Test first account is selected and shown.
      */
     @Test
     public void testFirstAccountIsSelected(){
+        enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
         DropdownButton btAccount=lookup("#btAccount").query();
         assertEquals("First account of the customer is not selected!!!",
                      "STANDARD # 1569874954",
                      btAccount.getSelectedItem().getText());
     }
+    /*@Test
+    public void testErrorOn*/
 }

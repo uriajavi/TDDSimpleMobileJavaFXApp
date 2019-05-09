@@ -11,6 +11,7 @@ import clientside.model.Customer;
 import com.gluonapplicationsimple.GluonApplicationSimple;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.DropdownButton;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -33,17 +34,17 @@ public class AdvancedViewFXMLController{
     public void initialize() {
         app=(GluonApplicationSimple)MobileApplication.getInstance();
         //get customer data
-        CustomerManager manager=(CustomerManager)app.getSession().get("manager");
-        Long customerID=(Long)app.getSession().get("customerID");
-        customer=manager.getCustomerAccountsFullInfo(customerID);
+        customer=(Customer)app.getSession().get("customer");
         //show welcome to customer
         lblWelcome.setText("Welcome "+ customer.getFirstName()+" "+
                            customer.getMiddleInitial()+" "+
                            customer.getLastName());
         //load accounts on account drop down button
-        customer.getAccounts().forEach((account) -> {
-            btAccount.getItems().add(new MenuItem(account.toString()));
-        });
+        List<Account> accounts=customer.getAccounts();
+        if(accounts!=null)
+            customer.getAccounts().forEach((account) -> {
+                btAccount.getItems().add(new MenuItem(account.toString()));
+            });
 
     }    
     

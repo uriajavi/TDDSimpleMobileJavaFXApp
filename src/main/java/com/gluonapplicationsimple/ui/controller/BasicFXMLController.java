@@ -6,6 +6,7 @@
 package com.gluonapplicationsimple.ui.controller;
 
 import clientside.controller.CustomerManager;
+import clientside.model.Customer;
 import com.gluonapplicationsimple.GluonApplicationSimple;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
@@ -14,6 +15,7 @@ import com.gluonhq.charm.glisten.control.TextField;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import java.net.URL;
+import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -63,15 +65,20 @@ public class BasicFXMLController {
     }
     
     public void handleOnActionEnter(ActionEvent event){
-        //Validate CustomerID
-        if(tfCustomerID.getText().matches("\\d+")){
+        try{
+            //validate CustomerID
+            if(!tfCustomerID.getText().matches("\\d+")) 
+                throw new Exception("Customer ID must be numeric!!!");
+            //get customer data and store in the session hashmap
             GluonApplicationSimple app=
-                    (GluonApplicationSimple)MobileApplication.getInstance();
+                        (GluonApplicationSimple)MobileApplication.getInstance();
+            CustomerManager manager=(CustomerManager)app.getSession().get("manager");
+            Customer customer=manager.getCustomerAccountsFullInfo(new Long(tfCustomerID.getText().trim()));
             //Store customer id in session and show advanced view
-            app.getSession().put("customerID",new Long(tfCustomerID.getText().trim()));
+            app.getSession().put("customer",customer);
             app.switchView(GluonApplicationSimple.ADVANCED_VIEW);
-        }else{
-             snackbar.setMessage("Customer ID must be numeric!!!");
+        }catch(Exception e){
+             snackbar.setMessage(e.getMessage());
              snackbar.show();
         }
     }

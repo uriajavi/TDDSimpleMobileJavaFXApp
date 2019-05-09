@@ -7,6 +7,7 @@ package com.gluonapplicationsimple.ui.controller;
 
 import com.gluonapplicationsimple.GluonApplicationSimple;
 import com.gluonhq.charm.glisten.application.MobileApplication;
+import com.gluonhq.charm.glisten.control.Snackbar;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.Node;
 import static org.junit.Assert.assertEquals;
@@ -21,6 +22,7 @@ import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isInvisible;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import org.testfx.service.query.EmptyNodeQueryException;
+import org.testfx.util.WaitForAsyncUtils;
 
 /**
  * Simple test class for Mobile JavaFX UI Controller.
@@ -32,6 +34,12 @@ public class BasicFXMLControllerTest extends FxRobot {
      * JavaFX Application instance to be tested.  
      */
     private static GluonApplicationSimple app;
+    /**
+     * Test data.
+     */
+    private static final String CUSTOMER_WITH_SEVERAL_ACCOUNTS="102263301";
+    private static final String CUSTOMER_WITH_NO_ACCOUNTS="345678401";
+    private static final String CUSTOMER_NON_EXISTENT="9999999999";
     /**
      * Set up Java FX fixture for tests. This is a general approach for using a 
      * unique instance of the application in the test.
@@ -72,8 +80,9 @@ public class BasicFXMLControllerTest extends FxRobot {
         verifyThat("Customer ID",isVisible());
         verifyThat("#tfCustomerID",isVisible());
         clickOn("#tfCustomerID");
-        write("9999999999");
+        write(CUSTOMER_NON_EXISTENT);
         verifyThat("#btEnter",isEnabled());
+        //clear written id
         eraseText(10);
         verifyThat("#btEnter",isDisabled());
     }
@@ -87,30 +96,46 @@ public class BasicFXMLControllerTest extends FxRobot {
                       MobileApplication.getInstance().getAppBar().getTitleText());
     }
     /**
-     * Test that advanced view is shown when Enter is clicked.
-     */
-    @Test
-    public void testActionOnEnter(){
-        clickOn("#tfCustomerID");
-        write("9999999999");
-        verifyThat("#btEnter",isEnabled());
-        clickOn("#btEnter");
-
-        verifyThat("#vwAdvanced",isVisible());
-        verifyThat("Welcome",isVisible());
-    }
-    /**
      * Test that a message appears when Customer ID is not numeric.
      */
     @Test
-    public void testCustomerIDIsNumeric(){
+    public void testCustomerIdIsNumeric(){
         clickOn("#tfCustomerID");
         write("thisIsNotANumber");
         verifyThat("#btEnter",isEnabled());
         clickOn("#btEnter");
         verifyThat("Customer ID must be numeric!!!",isVisible());
-        
+        //wait for error in snackbar to hide
+        WaitForAsyncUtils.waitForFxEvents();
+        //clear written id
         clickOn("#tfCustomerID");
         eraseText(16);
+    }
+    /**
+     * Test error is shown for non existent customer.
+     */
+    @Test
+    public void testErrorIsVisibleForNonExistentCustomer() {
+        clickOn("#tfCustomerID");
+        write(CUSTOMER_NON_EXISTENT);
+        verifyThat("#btEnter",isEnabled());
+        clickOn("#btEnter");
+        verifyThat("Cannot find customer with id # "+CUSTOMER_NON_EXISTENT,isVisible());
+        //wait for error in snackbar to hide
+        WaitForAsyncUtils.waitForFxEvents();
+        //clear written id
+        clickOn("#tfCustomerID");
+        eraseText(10);
+    }
+    /**
+     * Test welcome for customer is visible.
+     */
+    @Test
+    public void testCustomerWelcomeIsVisibleForCustomerWithAccounts() {
+        clickOn("#tfCustomerID");
+        write(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
+        verifyThat("#btEnter",isEnabled());
+        clickOn("#btEnter");
+        verifyThat("Welcome John S. Smith",isVisible());
     }
 }
