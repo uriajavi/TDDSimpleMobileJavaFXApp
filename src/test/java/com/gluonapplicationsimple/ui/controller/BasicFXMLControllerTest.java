@@ -106,7 +106,7 @@ public class BasicFXMLControllerTest extends FxRobot {
         clickOn("#btEnter");
         verifyThat("Customer ID must be numeric!!!",isVisible());
         //wait for error in snackbar to hide
-        WaitForAsyncUtils.waitForFxEvents();
+        sleep(1000);
         //clear written id
         clickOn("#tfCustomerID");
         eraseText(16);
@@ -122,7 +122,7 @@ public class BasicFXMLControllerTest extends FxRobot {
         clickOn("#btEnter");
         verifyThat("Cannot find customer with id # "+CUSTOMER_NON_EXISTENT,isVisible());
         //wait for error in snackbar to hide
-        WaitForAsyncUtils.waitForFxEvents();
+        sleep(1000);
         //clear written id
         clickOn("#tfCustomerID");
         eraseText(10);

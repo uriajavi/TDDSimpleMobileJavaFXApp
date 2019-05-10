@@ -7,6 +7,7 @@ package com.gluonapplicationsimple.ui.controller;
 
 import clientside.controller.CustomerManager;
 import com.gluonapplicationsimple.GluonApplicationSimple;
+import static com.gluonhq.charm.glisten.application.MobileApplication.HOME_VIEW;
 import com.gluonhq.charm.glisten.control.DropdownButton;
 import java.util.concurrent.TimeoutException;
 import javafx.application.Platform;
@@ -37,7 +38,7 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
     private static GluonApplicationSimple app;
     private static final String CUSTOMER_WITH_SEVERAL_ACCOUNTS="102263301";
     private static final String CUSTOMER_WITH_NO_ACCOUNTS="345678401";
-    private static final String CUSTOMER_NON_EXISTENT="999999";
+    private static final String CUSTOMER_NON_EXISTENT="9999999999";
     /**
      * Set up Java FX fixture for tests. This is a general approach for using a 
      * unique instance of the application in the test.
@@ -52,18 +53,16 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
      * Set up view state for testing. 
      */
     @Before
-    public void setUp(){
-        //Close initial gluon layer if it is shown.
+    public void setUp() throws TimeoutException{
+        //Close welcome gluon layer if it is shown.
         try{
             Node close=lookup("CLOSE").query();
             clickOn(close);
         }catch(EmptyNodeQueryException e){
-            //Does nothing
+            //Does nothing if welcome layer is not shown.
         }
-    }
-    //@After
-    public void cleanUp() throws Exception{
-        FxToolkit.cleanupStages();
+        //Switch to basic view and wait for it to load
+        WaitForAsyncUtils.waitForAsyncFx(1000,()->app.switchView(HOME_VIEW));
     }
     /**
      * Open Advanced View from Home View entering customerID
@@ -73,28 +72,23 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
         try{
             Node close=lookup("#btEnter").query();
             clickOn("#tfCustomerID");
+            eraseText(10);
             write(customerID);
             verifyThat("#btEnter",isEnabled());
             clickOn("#btEnter");
         }catch(EmptyNodeQueryException e){
-            //Change customer in session
-            app.getSession().replace("customer",
-                    ((CustomerManager)app.getSession().get("manager"))
-                            .getCustomerAccountsFullInfo(new Long(customerID)));
-            //initialize view
-            //TO DO
         }
     }
     /**
-     * Test welcome for customer is visible.
+     * Test welcome for customers is visible.
      */
     @Test
-    public void testCustomerWelcomeIsVisibleForCustomerWithAccounts() {
+    public void testCustomerWelcomeIsVisibleForCustomerWithAccounts(){
         enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
         verifyThat("Welcome John S. Smith",isVisible());
     }
     @Test
-    public void testCustomerWelcomeIsVisibleForCustomerWithNoAccounts() {
+    public void testCustomerWelcomeIsVisibleForCustomerWithNoAccounts(){
         enterCustomerId(CUSTOMER_WITH_NO_ACCOUNTS);
         verifyThat("Welcome Raymond J. Williams",isVisible());
     }
@@ -109,6 +103,4 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
                      "STANDARD # 1569874954",
                      btAccount.getSelectedItem().getText());
     }
-    /*@Test
-    public void testErrorOn*/
 }

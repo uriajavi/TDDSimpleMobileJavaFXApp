@@ -32,6 +32,8 @@ public class AdvancedViewFXMLController{
      * Initializes the controller class.
      */
     public void initialize() {
+        //TO DO: make this in an event handler for an event thrown whenever a 
+        //View is switched to.
         app=(GluonApplicationSimple)MobileApplication.getInstance();
         //get customer data
         customer=(Customer)app.getSession().get("customer");
