@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<View fx:id="vwAdvanced" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gluonapplicationsimple.ui.controller.AdvancedViewFXMLController">
+<View fx:id="vwAdvanced" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gluonapplicationsimple.ui.controller.AdvancedViewFXMLController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
@@ -40,7 +40,7 @@
             </DropdownButton>
             <Label fx:id="lblCurrentBalance" prefHeight="18.0" prefWidth="220.0" style="-fx-text-fill: #2190ff;" text="Current Balance : " />
             <Label fx:id="lblMovements" prefHeight="18.0" prefWidth="220.0" style="-fx-text-fill: #2190ff;" text="Movements:" />
-            <CharmListView fx:id="lstMovements" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="217.0" prefWidth="286.0" />
+            <CharmListView fx:id="lstMovements" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="307.0" prefWidth="286.0" />
          </children>
          <opaqueInsets>
             <Insets />

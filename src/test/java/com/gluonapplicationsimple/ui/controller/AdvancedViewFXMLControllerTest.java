@@ -8,6 +8,7 @@ package com.gluonapplicationsimple.ui.controller;
 import clientside.model.Customer;
 import com.gluonapplicationsimple.GluonApplicationSimple;
 import static com.gluonhq.charm.glisten.application.MobileApplication.HOME_VIEW;
+import com.gluonhq.charm.glisten.control.CharmListView;
 import com.gluonhq.charm.glisten.control.DropdownButton;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.Node;
@@ -59,7 +60,7 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
             Node close=lookup("CLOSE").query();
             clickOn(close);
         }catch(EmptyNodeQueryException e){
-            //Does nothing if welcome layer is not shown.
+            //Do nothing if welcome layer is not shown.
         }
         //Switch to basic view and wait for it to load
         WaitForAsyncUtils.waitForAsyncFx(10,()->app.switchView(HOME_VIEW));
@@ -77,10 +78,12 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
             write(customerID);
             verifyThat("#btEnter",isEnabled());
             clickOn("#btEnter");
-            WaitForAsyncUtils.waitForFxEvents();
             customer=(Customer)app.getSession().get("customer");
+            //wait a second after entering customer ID
+            sleep(1000);
+            WaitForAsyncUtils.waitForFxEvents();
         }catch(EmptyNodeQueryException e){
-            //does nothing
+            //do nothing
         }
     }
     /**
@@ -109,7 +112,6 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
     public void testFirstAccountIsSelected(){
         enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
         DropdownButton btAccount=lookup("#btAccount").query();
-        
         assertEquals("First account of the customer is not selected!!!",
                         customer.getAccounts().get(0).toString(),
                             btAccount.getSelectedItem().getText());
@@ -127,11 +129,34 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
         //click on second account
         clickOn("#btAccount");
         clickOn(customer.getAccounts().get(1).toString());
-        WaitForAsyncUtils.waitForFxEvents();
+        //WaitForAsyncUtils.waitForFxEvents();
         //this sleep is to allow dropdown menuitmes to hide
-        sleep(1000);
+        //sleep(1500);
         verifyThat("#lblCurrentBalance",
                     hasText("Current Balance : "+
                                 customer.getAccounts().get(1).getBalance()));
+    }
+    /**
+     * Test movements are loaded when account is selected.
+     */
+    @Test
+    public void testMovementsOnAccountSelect(){
+        enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
+        CharmListView lstMovements=lookup("#lstMovements").query();
+        //first account should be selected by default
+        //check movements list size
+        assertEquals("Movements list size is not as expected!!!",
+                    customer.getAccounts().get(0).getMovements().size(),
+                    lstMovements.itemsProperty().size());
+        //click on second account
+        /*clickOn("#btAccount");
+        clickOn(customer.getAccounts().get(1).toString());
+        WaitForAsyncUtils.waitForFxEvents();
+        //this sleep is to allow dropdown menuitmes to hide
+        sleep(1500);
+        //check movements list size
+        assertEquals("Movements list size is not as expected!!!",
+                    customer.getAccounts().get(1).getMovements().size(),
+                    lstMovements.itemsProperty().size());*/
     }
 }

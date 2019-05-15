@@ -10,10 +10,12 @@ import clientside.model.Account;
 import clientside.model.Customer;
 import com.gluonapplicationsimple.GluonApplicationSimple;
 import com.gluonhq.charm.glisten.application.MobileApplication;
+import com.gluonhq.charm.glisten.control.CharmListView;
 import com.gluonhq.charm.glisten.control.DropdownButton;
 import com.gluonhq.charm.glisten.control.LifecycleEvent;
 import com.gluonhq.charm.glisten.mvc.View;
 import java.util.List;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -35,6 +37,8 @@ public class AdvancedViewFXMLController{
     private DropdownButton btAccount;
     @FXML
     private Label lblCurrentBalance;
+    @FXML
+    private CharmListView lstMovements;
     /**
      * Initializes the controller class.
      */
@@ -84,5 +88,11 @@ public class AdvancedViewFXMLController{
                                     .filter(acc->acc.getId().equals(new Long(AccID)))
                                     .map(Account::getBalance)
                                     .findFirst().get().toString());
+        //Set movements as items for lstMovements
+        this.lstMovements.setItems(FXCollections.observableList(
+                                    customer.getAccounts().stream()
+                                    .filter(acc->acc.getId().equals(new Long(AccID)))
+                                    .map(Account::getMovements)
+                                    .findFirst().get()));
     }
 }
