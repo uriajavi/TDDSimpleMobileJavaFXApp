@@ -15,7 +15,6 @@ import javafx.scene.Node;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.api.FxRobot;
@@ -31,6 +30,7 @@ import org.testfx.util.WaitForAsyncUtils;
  * Note the extension from FxRobot to use its interacting methods.
  * @author javi
  */
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AdvancedViewFXMLControllerTest extends FxRobot{
     /**
      * JavaFX Application instance to be tested.  
@@ -64,7 +64,7 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
             //Do nothing if welcome layer is not shown.
         }
         //Switch to basic view and wait for it to load
-        WaitForAsyncUtils.waitForAsyncFx(10,()->app.switchView(HOME_VIEW));
+        interact(()->app.switchView(HOME_VIEW));
     }
     /**
      * Open Advanced View from Home View entering customerID
@@ -72,7 +72,6 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
      */
     private void enterCustomerId(String customerID){
         try{
-            WaitForAsyncUtils.waitForFxEvents();
             Node close=lookup("#btEnter").query();
             clickOn("#tfCustomerID");
             eraseText(10);
@@ -80,9 +79,6 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
             verifyThat("#btEnter",isEnabled());
             clickOn("#btEnter");
             customer=(Customer)app.getSession().get("customer");
-            //wait a second after entering customer ID
-            sleep(2000);
-            WaitForAsyncUtils.waitForFxEvents();
         }catch(EmptyNodeQueryException e){
             //do nothing
         }
@@ -91,7 +87,7 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
      * Test welcome for customers is visible.
      */
     @Test
-    @Ignore
+    //@Ignore
     public void testCustomerWelcomeIsVisibleForCustomerWithAccounts(){
         enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
         verifyThat("Welcome "+customer.getFirstName()+" "+
@@ -124,6 +120,7 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
     @Test
     public void testAccountSelection(){
         enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
+        DropdownButton btAccount=lookup("#btAccount").query();
         CharmListView lstMovements=lookup("#lstMovements").query();
         //first account should be selected by default
         verifyThat("#lblCurrentBalance",
@@ -133,12 +130,14 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
         //click on second account
         clickOn("#btAccount");
         clickOn(customer.getAccounts().get(1).toString());
-        //WaitForAsyncUtils.waitForFxEvents();
-        //this sleep is to allow dropdown menuitmes to hide
         verifyThat("#lblCurrentBalance",
                     hasText("Current Balance : "+
                                 customer.getAccounts().get(1).getBalance()));
         checkMovementsOnAccountSelect(1);
+        //click on label to hide accounts list and wait for message on snackbar
+        //to hide
+        clickOn("#lblWelcome");
+        sleep(1500);
     }
     /**
      * Test movements are loaded when account is selected.
