@@ -6,10 +6,12 @@
 package com.gluonapplicationsimple.ui.controller;
 
 import clientside.model.Customer;
+import clientside.model.Movement;
 import com.gluonapplicationsimple.GluonApplicationSimple;
 import static com.gluonhq.charm.glisten.application.MobileApplication.HOME_VIEW;
 import com.gluonhq.charm.glisten.control.CharmListView;
 import com.gluonhq.charm.glisten.control.DropdownButton;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.Node;
 import static org.junit.Assert.assertEquals;
@@ -37,7 +39,7 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
      */
     private static GluonApplicationSimple app;
     private Customer customer;
-    private static final String CUSTOMER_WITH_SEVERAL_ACCOUNTS="102263301";
+    private static final String CUSTOMER_WITH_SEVERAL_ACCOUNTS="299985563";
     private static final String CUSTOMER_WITH_NO_ACCOUNTS="345678401";
     private static final String CUSTOMER_NON_EXISTENT="9999999999";
     /**
@@ -125,14 +127,14 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
         //first account should be selected by default
         verifyThat("#lblCurrentBalance",
                     hasText("Current Balance : "+
-                                customer.getAccounts().get(0).getBalance()));
+                                customer.getAccounts().get(0).getBalance()+" $"));
         checkMovementsOnAccountSelect(0);
         //click on second account
         clickOn("#btAccount");
         clickOn(customer.getAccounts().get(1).toString());
         verifyThat("#lblCurrentBalance",
                     hasText("Current Balance : "+
-                                customer.getAccounts().get(1).getBalance()));
+                                customer.getAccounts().get(1).getBalance()+" $"));
         checkMovementsOnAccountSelect(1);
         //click on label to hide accounts list and wait for message on snackbar
         //to hide
@@ -141,15 +143,25 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
     }
     /**
      * Test movements are loaded when account is selected.
+     * @param accountEntry selected index for account list
      */
     public void checkMovementsOnAccountSelect(int accountEntry){
         CharmListView lstMovements=lookup("#lstMovements").query();
+        List<Movement> movements=customer.getAccounts().get(accountEntry).getMovements();
         //first account should be selected by default
-        if(customer.getAccounts().get(accountEntry).getMovements()!=null)
+        if(movements !=null){
             //if there are movements, check movements list size
             assertEquals("Movements list size is not as expected!!!",
-                        customer.getAccounts().get(accountEntry).getMovements().size(),
+                        movements.size(),
                         lstMovements.itemsProperty().size());
+            //check movements detailed info
+            lstMovements.itemsProperty().stream()
+                    .forEach(m->{
+                        verifyThat(((Movement)m).getDescription(),isVisible());
+                        verifyThat(((Movement)m).getAmount().toString()+" $",isVisible());
+                        verifyThat(((Movement)m).getBalance().toString()+" $",isVisible());
+                    });
+        }    
         else
             //if there are not movements, verify info message
             verifyThat("No movements for this account!!",isVisible());
