@@ -8,6 +8,7 @@ package com.gluonapplicationsimple.ui.controller;
 import clientside.model.Customer;
 import clientside.model.Movement;
 import com.gluonapplicationsimple.GluonApplicationSimple;
+import com.gluonhq.charm.glisten.application.MobileApplication;
 import static com.gluonhq.charm.glisten.application.MobileApplication.HOME_VIEW;
 import com.gluonhq.charm.glisten.control.CharmListView;
 import com.gluonhq.charm.glisten.control.DropdownButton;
@@ -166,4 +167,16 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
             //if there are not movements, verify info message
             verifyThat("No movements for this account!!",isVisible());
     }
+    /**
+     * Test AppBar state and appearance.
+     */
+    @Test
+    public void testAppBarAppearance(){
+        enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
+        verifyThat("Bank Statement",isVisible());
+        assertEquals("AppBar title is not as expected!!!",
+                      "Bank Statement",
+                      app.getAppBar().getTitleText());
+    }
+
 }

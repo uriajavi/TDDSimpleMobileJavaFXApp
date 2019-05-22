@@ -112,6 +112,8 @@ public class AdvancedViewFXMLController{
      */
     public void handleViewShowing(LifecycleEvent event){
         try{
+            //set appbar text
+            app.getAppBar().setTitleText("Bank Statement");
             //get customer data
             customer=(Customer)app.getSession().get("customer");
             //show welcome to customer
