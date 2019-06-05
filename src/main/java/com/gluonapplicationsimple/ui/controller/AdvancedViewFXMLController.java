@@ -17,6 +17,7 @@ import com.gluonhq.charm.glisten.control.DropdownButton;
 import com.gluonhq.charm.glisten.control.LifecycleEvent;
 import com.gluonhq.charm.glisten.control.Snackbar;
 import com.gluonhq.charm.glisten.mvc.View;
+import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,6 +115,8 @@ public class AdvancedViewFXMLController{
         try{
             //set appbar text
             app.getAppBar().setTitleText("Bank Statement");
+            app.getAppBar().setNavIcon(MaterialDesignIcon.MENU.button(e -> 
+                        MobileApplication.getInstance().getDrawer().open()));
             //get customer data
             customer=(Customer)app.getSession().get("customer");
             //show welcome to customer

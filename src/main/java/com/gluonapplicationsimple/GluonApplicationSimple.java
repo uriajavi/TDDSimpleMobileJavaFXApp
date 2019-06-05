@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import clientside.controller.CustomerManager;
 import clientside.controller.CustomerManagerFactory;
+import com.gluonapplicationsimple.ui.DrawerManager;
 import java.util.HashMap;
 
 @License(key="7e71ebf2-bb31-44b7-806e-2cb0e3a7f4ba")
@@ -23,6 +24,8 @@ public class GluonApplicationSimple extends MobileApplication {
         //get views
         addViewFactory(HOME_VIEW, BasicViewFactory::getView);
         addViewFactory(ADVANCED_VIEW, AdvancedViewFactory::getView);
+        //build navigation menu
+        DrawerManager.buildDrawer(this);
         //create session
         session=new HashMap();
         //get business logic controller and stores in the session object

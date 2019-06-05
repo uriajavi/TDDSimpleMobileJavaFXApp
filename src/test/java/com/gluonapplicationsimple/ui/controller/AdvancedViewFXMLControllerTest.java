@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.Node;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -178,5 +179,29 @@ public class AdvancedViewFXMLControllerTest extends FxRobot{
                       "Bank Statement",
                       app.getAppBar().getTitleText());
     }
-
+    
+    /**
+     * Test navigation drawer.
+     */
+    @Test
+    public void testNavigationDrawerIsVisible(){
+        enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
+        assertNotNull("Navigation menu not available!!",
+                app.getAppBar().getNavIcon());
+        clickOn(app.getAppBar().getNavIcon());
+        verifyThat("Home",isVisible());
+        verifyThat("Quit",isVisible());
+        clickOn(app.getAppBar());
+    }
+    /**
+     * Test navigation to home view.
+     */
+    @Test
+    public void testNavigationToHomeView(){
+        enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
+        clickOn(app.getAppBar().getNavIcon());
+        clickOn(app.getDrawer().getItems().get(1));
+        verifyThat("Simple Mobile App",isVisible());
+        enterCustomerId(CUSTOMER_WITH_SEVERAL_ACCOUNTS);
+    }
 }
