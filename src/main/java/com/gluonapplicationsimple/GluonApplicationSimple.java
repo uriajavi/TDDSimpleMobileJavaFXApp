@@ -29,8 +29,10 @@ public class GluonApplicationSimple extends MobileApplication {
         //create session
         session=new HashMap();
         //get business logic controller and stores in the session object
-        CustomerManager manager= CustomerManagerFactory.getCustomerManager();
-        manager.setServerName("localhost");
+        CustomerManager manager= CustomerManagerFactory.getCustomerManager("ANDROID");
+        manager.setServerName("192.168.1.47");
+        //set manager media type
+        //manager.setMediaType(javax.ws.rs.core.MediaType.APPLICATION_JSON);
         session.put("manager",manager);
     }
 

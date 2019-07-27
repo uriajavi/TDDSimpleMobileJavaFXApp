@@ -21,7 +21,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 
 /**
  * FXML Controller class
@@ -78,8 +80,27 @@ public class BasicFXMLController {
             app.getSession().put("customer",customer);
             app.switchView(GluonApplicationSimple.ADVANCED_VIEW);
         }catch(Exception e){
-             snackbar.setMessage(e.getMessage());
-             snackbar.show();
+            snackbar.setMessage(formatMessage(e.getMessage()));
+            snackbar.show();
         }
     }
+    
+    private String formatMessage(String message){
+        StringBuilder builder=new StringBuilder(message);
+        for(int i=30;i<message.length();i*=2)
+            builder.insert(i, '\n');
+        return builder.toString();
+    }
+    /**
+     * Shows an error message in an alert dialog.
+     * @param errorMsg The error message to be shown.
+     */
+    protected void showErrorAlert(String errorMsg){
+        //Shows error dialog.
+        Alert alert=new Alert(Alert.AlertType.ERROR,
+                              errorMsg,
+                              ButtonType.OK);
+        alert.showAndWait();
+    }
+
 }

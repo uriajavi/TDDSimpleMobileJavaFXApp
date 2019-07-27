@@ -34,15 +34,13 @@ public class DrawerManager {
                 MaterialDesignIcon.HOME.graphic(), HOME_VIEW, ViewStackPolicy.CLEAR);
         drawer.getItems().addAll(primaryItem);
         
-        if (Platform.isDesktop()) {
-            final NavigationDrawer.Item quitItem = new NavigationDrawer.Item("Quit", 
+        final NavigationDrawer.Item quitItem = new NavigationDrawer.Item("Quit", 
                     MaterialDesignIcon.EXIT_TO_APP.graphic());
-            quitItem.selectedProperty().addListener((obs, ov, nv) -> {
+        quitItem.selectedProperty().addListener((obs, ov, nv) -> {
                 if (nv) {
                     Services.get(LifecycleService.class).ifPresent(LifecycleService::shutdown);
                 }
-            });
-            drawer.getItems().add(quitItem);
-        }
+        });
+        drawer.getItems().add(quitItem);
     }
 }

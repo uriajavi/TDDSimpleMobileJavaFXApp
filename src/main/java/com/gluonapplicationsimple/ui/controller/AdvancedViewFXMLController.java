@@ -27,6 +27,8 @@ import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TitledPane;
@@ -127,16 +129,19 @@ public class AdvancedViewFXMLController{
             btAccount.getItems().clear();
             //load accounts on account drop down button
             List<Account> accounts=customer.getAccounts();
-            if(accounts!=null){
+            if(accounts!=null&&!accounts.isEmpty()){
                 customer.getAccounts().forEach((account) -> {
+                //for(Account account:customer.getAccounts()){ //this code works on android 6 
                     MenuItem menuItem=new MenuItem(account.toString());
                     menuItem.setId(account.getId().toString());
                     menuItem.setOnAction(this::handleAccountSelection);
                     btAccount.getItems().add(menuItem);
                 });
                 //select first account
-                btAccount.setSelectedItem(btAccount.getItems().get(0));
-                handleAccountSelection(new ActionEvent(btAccount.getItems().get(0),null));
+                if(!btAccount.getItems().isEmpty()){
+                    btAccount.setSelectedItem(btAccount.getItems().get(0));
+                    handleAccountSelection(new ActionEvent(btAccount.getItems().get(0),null));
+                }   
             }
         }catch(Exception e){
             snackbar.setMessage(e.getMessage());
@@ -187,4 +192,16 @@ public class AdvancedViewFXMLController{
         else 
             label.setStyle("-fx-text-fill:green;");
     }
+    /**
+     * Shows an error message in an alert dialog.
+     * @param errorMsg The error message to be shown.
+     */
+    protected void showErrorAlert(String errorMsg){
+        //Shows error dialog.
+        Alert alert=new Alert(Alert.AlertType.ERROR,
+                              errorMsg,
+                              ButtonType.OK);
+        alert.showAndWait();
+    }
+
 }

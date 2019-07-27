@@ -22,8 +22,8 @@ repositories {
 
 mainClassName = 'com.gluonapplicationsimple.GluonApplicationSimple'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
     if (JavaVersion.current() == JavaVersion.VERSION_1_9) {
@@ -35,13 +35,16 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.testfx:testfx-core:4.0.+"
     testCompile "org.testfx:testfx-junit:4.0.+"
-    //compile files('libs/CRUDBankClientLibrary.jar')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1'
-    compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.25.1'
-    compile group: 'org.glassfish.jersey.core', name: 'jersey-common', version: '2.25.1'    
-    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet-core', version: '2.25.1'
-    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.25.1'
+    compile group: 'com.squareup.retrofit2', name: 'converter-jackson', version: '2.6.0'
+    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.0.1'
+    compile group: 'com.squareup.retrofit2', name: 'converter-simplexml', version: '2.6.0'
+    compile group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.6.0'
+    compile group: 'com.squareup.retrofit2', name: 'adapter-rxjava', version: '2.6.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.9'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.9'
 }
 
 jfxmobile {
@@ -52,6 +55,21 @@ jfxmobile {
     }
     android {
         manifest = 'src/android/AndroidManifest.xml'
+        signingConfig {
+            storeFile file('my.keystore')
+            storePassword 'abcd*1234'
+            keyAlias 'apktest'
+            keyPassword 'abcd*1234'
+        }
+        packagingOptions {
+            pickFirst 'META-INF/services/org.glassfish.jersey.internal.spi.AutoDiscoverable'
+            pickFirst 'META-INF/services/org.glassfish.jersey.internal.spi.ForcedAutoDiscoverable'
+            pickFirst 'META-INF/LICENSE.md'
+            pickFirst 'META-INF/LICENSE'
+            pickFirst 'META-INF/NOTICE'            
+            pickFirst 'META-INF/NOTICE.md'
+            pickFirst 'META-INF/NOTICE.markdown'
+        }
     }
     ios {
         infoPList = file('src/ios/Default-Info.plist')
