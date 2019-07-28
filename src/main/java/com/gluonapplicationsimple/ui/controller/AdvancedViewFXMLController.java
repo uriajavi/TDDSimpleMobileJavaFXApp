@@ -126,17 +126,24 @@ public class AdvancedViewFXMLController{
                                customer.getMiddleInitial()+" "+
                                customer.getLastName());
             //clear accounts list
+            MenuItem emptyMenuItem=new MenuItem("");
+            btAccount.getItems().add(emptyMenuItem);
+            btAccount.setSelectedItem(emptyMenuItem);
             btAccount.getItems().clear();
+            //clear current balance
+            lblCurrentBalance.setText("Current Balance : ");
+            //clear movements list
+            lstMovements.setItems(FXCollections.emptyObservableList());
             //load accounts on account drop down button
             List<Account> accounts=customer.getAccounts();
             if(accounts!=null&&!accounts.isEmpty()){
-                customer.getAccounts().forEach((account) -> {
-                //for(Account account:customer.getAccounts()){ //this code works on android 6 
+                //customer.getAccounts().forEach((account) -> {
+                for(Account account:customer.getAccounts()){ //this code works on android 6 
                     MenuItem menuItem=new MenuItem(account.toString());
                     menuItem.setId(account.getId().toString());
                     menuItem.setOnAction(this::handleAccountSelection);
                     btAccount.getItems().add(menuItem);
-                });
+                }
                 //select first account
                 if(!btAccount.getItems().isEmpty()){
                     btAccount.setSelectedItem(btAccount.getItems().get(0));
@@ -156,20 +163,29 @@ public class AdvancedViewFXMLController{
         try{
             //Get selected account: account id is the same as the menuitem id 
             String AccID=((MenuItem)event.getSource()).getId();
+            lblCurrentBalance.setStyle(lblCurrentBalance.getStyle()+
+                                       "-fx-font-weight:bold;" );
             //Set current balance as selected account balance
-            lblCurrentBalance.setText("Current Balance : "+ 
+            /*lblCurrentBalance.setText("Current Balance : "+ 
                                        customer.getAccounts().stream()
                                         .filter(acc->acc.getId().equals(new Long(AccID)))
                                         .map(Account::getBalance)
-                                        .findFirst().get().toString()+" $");
-            lblCurrentBalance.setStyle(lblCurrentBalance.getStyle()+
-                                       "-fx-font-weight:bold;" );
+                                        .findFirst().get().toString()+" $");*/
+            //Android 6 does not allow aggregated ops. 
+            List <Movement> movements=null;
+            for(Account account:customer.getAccounts()){
+                if(account.getId().equals(new Long(AccID))){
+                    lblCurrentBalance.setText("Current Balance : "+
+                                              account.getBalance().toString()+ " $"); 
+                    movements=account.getMovements();
+                }    
+            }
             //Set account movements as items for lstMovements
-            List <Movement> movements=customer.getAccounts().stream()
+            /**List <Movement> movements=customer.getAccounts().stream()
                                         .filter(acc->acc.getId().equals(new Long(AccID)))
                                         .findFirst()
-                                        .get().getMovements();
-            if(movements!=null){
+                                        .get().getMovements();*/
+            if(movements!=null&&!movements.isEmpty()){
                 lstMovements.setItems(FXCollections.observableList(movements));
             }
             else{

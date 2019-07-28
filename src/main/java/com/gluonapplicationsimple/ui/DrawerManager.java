@@ -5,6 +5,7 @@
  */
 package com.gluonapplicationsimple.ui;
 
+import com.gluonapplicationsimple.GluonApplicationSimple;
 import com.gluonhq.charm.down.Platform;
 import com.gluonhq.charm.down.Services;
 import com.gluonhq.charm.down.plugins.LifecycleService;
@@ -30,9 +31,14 @@ public class DrawerManager {
                 new Avatar(21, new Image(DrawerManager.class.getResourceAsStream("/icon.png"))));
         drawer.setHeader(header);
         
-        final NavigationDrawer.Item primaryItem = new NavigationDrawer.ViewItem("Home", 
-                MaterialDesignIcon.HOME.graphic(), HOME_VIEW, ViewStackPolicy.CLEAR);
+        final NavigationDrawer.Item primaryItem = new NavigationDrawer.ViewItem("Logon", 
+                MaterialDesignIcon.HOME.graphic(), HOME_VIEW, ViewStackPolicy.USE);
         drawer.getItems().addAll(primaryItem);
+
+        final NavigationDrawer.Item secondaryItem = new NavigationDrawer.ViewItem("Statement", 
+                MaterialDesignIcon.ACCOUNT_BALANCE.graphic(), GluonApplicationSimple.ADVANCED_VIEW, ViewStackPolicy.USE);
+        drawer.getItems().add(secondaryItem);
+
         
         final NavigationDrawer.Item quitItem = new NavigationDrawer.Item("Quit", 
                     MaterialDesignIcon.EXIT_TO_APP.graphic());
